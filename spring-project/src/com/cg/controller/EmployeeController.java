@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cg.dao.EmployeeDao;
@@ -20,34 +18,24 @@ public class EmployeeController {
 
 	@RequestMapping("/empform")
 	public ModelAndView showform() {
-
 		return new ModelAndView("empform");
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute("emp") Employee emp) {
-		dao.save(emp);
-
-		return new ModelAndView("redirect:/viewemp");
-
-	}
-
 	@RequestMapping("/viewemp")
-	public ModelAndView viewemp() {
-		List<Employee> list = dao.getAllRecords();
+	public ModelAndView viewEmp() {
+		List<Employee> list = dao.getAllEmployees();
 		return new ModelAndView("viewemp", "list", list);
 	}
-
-	/*
-	 * @RequestMapping(value="/editemp/{id}") public ModelAndView edit(@PathVariable
-	 * int id){
-	 * 
-	 * dao.update(id); return new ModelAndView("empeditform","command",emp); }
-	 */
-
-	/*
-	 * @RequestMapping(value="/editsave",method = RequestMethod.POST) public
-	 * ModelAndView editsave(@ModelAttribute("emp") Employee emp){ dao.update(emp);
-	 * return new ModelAndView("redirect:/viewemp"); }
-	 */
+	
+	@RequestMapping("/addemp")
+	public ModelAndView addEmp(Employee e) {
+		dao.addEmployee(e);
+		return new ModelAndView("success");
+	}
+	
+	@RequestMapping("/added")
+	public ModelAndView add(Employee e) {
+		dao.addEmployee(e);
+		return new ModelAndView("success");
+	}
 }

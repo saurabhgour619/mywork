@@ -17,14 +17,32 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	private SessionFactory sf;
 
 	@Override
-	public int save(Employee emp) {
-		return 0;
+	public List<Employee> getAllEmployees() {
+		return sf.getCurrentSession().createQuery("from Employee", Employee.class).getResultList();
+
+	}
+
+	public void addEmployee(Employee employee) {
+		sf.getCurrentSession().saveOrUpdate(employee);
+
 	}
 
 	@Override
-	public List<Employee> getAllRecords() {
-		String query = "from Employee";
-		return sf.getCurrentSession().createQuery(query, Employee.class).getResultList();
+	public void deleteEmployee(Integer id) {
+		Employee employee = (Employee) sf.getCurrentSession().load(Employee.class, id);
+		if (null != employee) {
+			this.sf.getCurrentSession().delete(employee);
+		}
 
+	}
+
+	public Employee getEmployee(int id) {
+		return (Employee) sf.getCurrentSession().get(Employee.class, id);
+	}
+
+	@Override
+	public Employee updateEmployee(Employee employee) {
+		sf.getCurrentSession().update(employee);
+		return employee;
 	}
 }
